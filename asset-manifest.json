@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/use-screen-recorder/static/css/main.0791bd9d.chunk.css",
+    "main.js": "/use-screen-recorder/static/js/main.1ad2b179.chunk.js",
+    "main.js.map": "/use-screen-recorder/static/js/main.1ad2b179.chunk.js.map",
+    "runtime-main.js": "/use-screen-recorder/static/js/runtime-main.a60d2e96.js",
+    "runtime-main.js.map": "/use-screen-recorder/static/js/runtime-main.a60d2e96.js.map",
+    "static/js/2.0bcd3267.chunk.js": "/use-screen-recorder/static/js/2.0bcd3267.chunk.js",
+    "static/js/2.0bcd3267.chunk.js.map": "/use-screen-recorder/static/js/2.0bcd3267.chunk.js.map",
+    "index.html": "/use-screen-recorder/index.html",
+    "precache-manifest.4c04f6b20e6a485b1aa648ba92ee315f.js": "/use-screen-recorder/precache-manifest.4c04f6b20e6a485b1aa648ba92ee315f.js",
+    "service-worker.js": "/use-screen-recorder/service-worker.js",
+    "static/css/main.0791bd9d.chunk.css.map": "/use-screen-recorder/static/css/main.0791bd9d.chunk.css.map",
+    "static/js/2.0bcd3267.chunk.js.LICENSE.txt": "/use-screen-recorder/static/js/2.0bcd3267.chunk.js.LICENSE.txt",
+    "static/js/main.1ad2b179.chunk.js.LICENSE.txt": "/use-screen-recorder/static/js/main.1ad2b179.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a60d2e96.js",
+    "static/js/2.0bcd3267.chunk.js",
+    "static/css/main.0791bd9d.chunk.css",
+    "static/js/main.1ad2b179.chunk.js"
+  ]
+}
