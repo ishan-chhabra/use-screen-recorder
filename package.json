@@ -1,7 +1,7 @@
 {
   "name": "use-screen-recorder",
   "version": "1.0.0",
-  "description": "React hook that easily lets you record your screen using the MediaStream APIs",
+  "description": "React hook for easily recording screen using MediaStream APIs.",
   "author": "ishan-chhabra",
   "license": "MIT",
   "repository": "ishan-chhabra/use-screen-recorder",
