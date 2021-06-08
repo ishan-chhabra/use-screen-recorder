@@ -10,6 +10,7 @@ const useScreenRecorder = ({
   audio?: boolean;
 }) => {
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
+  const [blob, setBlob] = useState<Blob | null>(null);
   const [error, setError] = useState<any>();
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>();
   const [status, setStatus] = useState<Status>("idle");
@@ -23,6 +24,7 @@ const useScreenRecorder = ({
     mediaRecorder.ondataavailable = (event) => {
       const url = window.URL.createObjectURL(event.data);
       setBlobUrl(url);
+      setBlob(event.data);
     };
   }, [mediaRecorder]);
 
@@ -31,7 +33,7 @@ const useScreenRecorder = ({
       // @ts-ignore
       let displayMedia = await navigator.mediaDevices.getDisplayMedia();
 
-      let userMedia: MediaStream
+      let userMedia: MediaStream;
 
       if (audio) {
         userMedia = await navigator.mediaDevices.getUserMedia({ audio });
@@ -45,12 +47,13 @@ const useScreenRecorder = ({
 
       setStreams({
         audio:
-        // @ts-ignore
+          // @ts-ignore
           userMedia?.getTracks().find((track) => track.kind === "audio") ||
           null,
         screen:
-          displayMedia.getTracks().find((track: MediaStreamTrack) => track.kind === "video") ||
-          null,
+          displayMedia
+            .getTracks()
+            .find((track: MediaStreamTrack) => track.kind === "video") || null,
       });
 
       return mediaRecorder;
@@ -102,6 +105,7 @@ const useScreenRecorder = ({
   };
 
   return {
+    blob,
     blobUrl,
     error,
     pauseRecording,
