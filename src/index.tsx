@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 
 type Status = "recording" | "idle" | "error" | "stopped" | "paused";
 
+const PERMISSION_DENIED_ERROR = "Permission denied";
+
 const useScreenRecorder = ({
   options,
   audio = false,
@@ -32,7 +34,7 @@ const useScreenRecorder = ({
     try {
       const displayMedia = await navigator.mediaDevices.getDisplayMedia();
 
-      let tracks = displayMedia?.getTracks();
+      let tracks = [...displayMedia?.getTracks()];
       let streams = {
         screen:
           displayMedia
@@ -62,8 +64,14 @@ const useScreenRecorder = ({
       setStreams(streams);
       return mediaRecorder;
     } catch (e) {
-      setError(e);
-      setStatus("error");
+      const err = e as DOMException;
+
+      if (err?.message === PERMISSION_DENIED_ERROR) {
+        //
+      } else {
+        setError(e);
+        setStatus("error");
+      }
     }
     return;
   };
@@ -82,8 +90,10 @@ const useScreenRecorder = ({
 
   const startRecording = async () => {
     const recorder = mediaRecorder ?? (await requestMediaStream());
-    (recorder as MediaRecorder).start();
-    setStatus("recording");
+    if (recorder) {
+      recorder.start();
+      setStatus("recording");
+    }
   };
 
   const pauseRecording = () => {
@@ -116,6 +126,10 @@ const useScreenRecorder = ({
     status,
     stopRecording,
     streams,
+    isIdle: status === "idle",
+    isRecording: status === "recording",
+    isPaused: status === "paused",
+    isStopped: status === "stopped",
   };
 };
 
