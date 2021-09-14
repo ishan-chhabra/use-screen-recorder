@@ -30,32 +30,36 @@ const useScreenRecorder = ({
 
   const requestMediaStream = async () => {
     try {
-      // @ts-ignore
-      let displayMedia = await navigator.mediaDevices.getDisplayMedia();
+      const displayMedia = await navigator.mediaDevices.getDisplayMedia();
 
-      let userMedia: MediaStream;
-
-      if (audio) {
-        userMedia = await navigator.mediaDevices.getUserMedia({ audio });
-      }
-
-      // @ts-ignore
-      const tracks = [...displayMedia?.getTracks(), ...userMedia?.getTracks()];
-      const stream: MediaStream = new MediaStream(tracks);
-      const mediaRecorder = new MediaRecorder(stream, options);
-      setMediaRecorder(mediaRecorder);
-
-      setStreams({
-        audio:
-          // @ts-ignore
-          userMedia?.getTracks().find((track) => track.kind === "audio") ||
-          null,
+      let tracks = displayMedia?.getTracks();
+      let streams = {
         screen:
           displayMedia
             .getTracks()
             .find((track: MediaStreamTrack) => track.kind === "video") || null,
-      });
+      };
 
+      if (audio) {
+        const userMedia = await navigator.mediaDevices.getUserMedia({ audio });
+        tracks = [...tracks, ...userMedia?.getTracks()];
+        streams = {
+          ...streams,
+          ...{
+            audio:
+              (userMedia &&
+                userMedia
+                  .getTracks()
+                  .find((track) => track.kind === "audio")) ||
+              null,
+          },
+        };
+      }
+
+      const stream: MediaStream = new MediaStream(tracks);
+      const mediaRecorder = new MediaRecorder(stream, options);
+      setMediaRecorder(mediaRecorder);
+      setStreams(streams);
       return mediaRecorder;
     } catch (e) {
       setError(e);
@@ -70,17 +74,14 @@ const useScreenRecorder = ({
 
     setStatus("stopped");
 
-    mediaRecorder.stream.getTracks().map((track) => {
+    mediaRecorder.stream.getTracks().forEach((track) => {
       track.stop();
     });
     setMediaRecorder(null);
   };
 
   const startRecording = async () => {
-    let recorder = mediaRecorder;
-    if (!mediaRecorder) {
-      recorder = await requestMediaStream();
-    }
+    const recorder = mediaRecorder ?? (await requestMediaStream());
     (recorder as MediaRecorder).start();
     setStatus("recording");
   };
