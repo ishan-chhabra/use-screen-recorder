@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 
-type Status = "recording" | "idle" | "error" | "stopped" | "paused";
+export type Status =
+  | "recording"
+  | "idle"
+  | "error"
+  | "stopped"
+  | "paused"
+  | "permission-requested";
 
 const useScreenRecorder = ({
   options,
@@ -13,7 +19,7 @@ const useScreenRecorder = ({
   const [blob, setBlob] = useState<Blob | null>(null);
   const [error, setError] = useState<any>();
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>();
-  const [status, setStatus] = useState<Status>("idle");
+  const [status, setStatus] = useState<Status>("permission-requested");
   const [streams, setStreams] = useState<{
     audio?: MediaStreamTrack | null;
     screen?: MediaStreamTrack | null;
@@ -41,6 +47,7 @@ const useScreenRecorder = ({
 
       // @ts-ignore
       const tracks = [...displayMedia?.getTracks(), ...userMedia?.getTracks()];
+      if (tracks) setStatus("idle");
       const stream: MediaStream = new MediaStream(tracks);
       const mediaRecorder = new MediaRecorder(stream, options);
       setMediaRecorder(mediaRecorder);
