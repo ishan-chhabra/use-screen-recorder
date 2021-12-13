@@ -41,7 +41,9 @@ const App = () => {
         </div>
 
         <div className="buttons">
-          {(status === "idle" || status === "error") && (
+          {(status === "idle" ||
+            status === "permission-requested" ||
+            status === "error") && (
             <button onClick={startRecording}>Start recording</button>
           )}
           {(status === "recording" || status === "paused") && (
